@@ -3,167 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookify — Where Stories Find Their Soundtrack</title>
+  <title>Bookify — Book to Playlist</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="mood-literary">
-  <div class="page-texture"></div>
-  <div class="spine-decoration"></div>
-
-  <div class="container">
-    <header>
-      <div class="logo-mark">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 12C8 10.8954 8.89543 10 10 10H22C23.1046 10 24 10.8954 24 12V38C24 39.1046 23.1046 40 22 40H10C8.89543 40 8 39.1046 8 38V12Z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M24 12C24 10.8954 24.8954 10 26 10H38C39.1046 10 40 10.8954 40 12V38C40 39.1046 39.1046 40 38 40H26C24.8954 40 24 39.1046 24 38V12Z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M12 16H20M12 20H20M12 24H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <circle cx="32" cy="22" r="4" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M30 28H34M28 32H36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<body>
+  <div class="app">
+    <nav class="sidebar">
+      <div class="logo">
+        <svg viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="6" width="14" height="28" rx="2" stroke="currentColor" stroke-width="2"/>
+          <rect x="22" y="6" width="14" height="28" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 12h6M8 16h6M8 20h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="29" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+          <path d="M26 22h6M27 26h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
+        <span>Bookify</span>
       </div>
-      <h1>Bookify</h1>
-      <p class="subtitle">Where Stories Find Their Soundtrack</p>
-      <div class="decorative-line">
-        <span></span>
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-        </svg>
-        <span></span>
+      <div class="nav-section">
+        <a href="#" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"/></svg>
+          <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.533 1.27893C5.35215 1.27893 1.12598 5.41887 1.12598 10.5579C1.12598 15.697 5.35215 19.8369 10.533 19.8369C12.767 19.8369 14.8235 19.0671 16.4402 17.7794L20.7929 22.132C21.1834 22.5226 21.8166 22.5226 22.2071 22.132C22.5976 21.7415 22.5976 21.1083 22.2071 20.7178L17.8634 16.3741C19.1616 14.7849 19.94 12.7634 19.94 10.5579C19.94 5.41887 15.7138 1.27893 10.533 1.27893ZM3.12598 10.5579C3.12598 6.55226 6.42768 3.27893 10.533 3.27893C14.6383 3.27893 17.94 6.55226 17.94 10.5579C17.94 14.5. 14.6383 17.8369 10.533 17.8369C6.42768 17.8369 3.12598 14.5636 3.12598 10.5579Z"/></svg>
+          <span>Search</span>
+        </a>
       </div>
-    </header>
+      <div class="nav-section library">
+        <div class="library-header">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM21 7.464V20h-5V4.268l5 2.887zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"/></svg>
+          <span>Your Library</span>
+        </div>
+        <div class="library-empty">
+          <p>Your generated playlists will appear here</p>
+        </div>
+      </div>
+    </nav>
 
-    <main id="main-content">
-      <form id="book-form" class="book-form">
-        <div class="form-intro">
-          <p>Enter a book, and we'll compose a playlist that captures its essence—the era, the mood, the unspoken atmosphere between the lines.</p>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <div id="hero" class="hero">
+          <div class="hero-gradient"></div>
+          <div class="hero-content">
+            <span class="hero-label">Book to Playlist</span>
+            <h1>Find the soundtrack to your story</h1>
+            <p>Enter any book and we'll create a playlist that captures its mood, era, and atmosphere.</p>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="bookTitle">
-            <span class="label-text">Book Title</span>
-            <span class="label-required">*</span>
-          </label>
-          <div class="autocomplete-wrapper">
-            <div class="input-wrapper">
-              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-              </svg>
+        <form id="book-form" class="search-section">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10.533 1.27893C5.35215 1.27893 1.12598 5.41887 1.12598 10.5579C1.12598 15.697 5.35215 19.8369 10.533 19.8369C12.767 19.8369 14.8235 19.0671 16.4402 17.7794L20.7929 22.132C21.1834 22.5226 21.8166 22.5226 22.2071 22.132C22.5976 21.7415 22.5976 21.1083 22.2071 20.7178L17.8634 16.3741C19.1616 14.7849 19.94 12.7634 19.94 10.5579C19.94 5.41887 15.7138 1.27893 10.533 1.27893ZM3.12598 10.5579C3.12598 6.55226 6.42768 3.27893 10.533 3.27893C14.6383 3.27893 17.94 6.55226 17.94 10.5579C17.94 14.5636 14.6383 17.8369 10.533 17.8369C6.42768 17.8369 3.12598 14.5636 3.12598 10.5579Z"/>
+            </svg>
+            <div class="autocomplete-wrapper">
               <input type="text" id="bookTitle" name="bookTitle" required
-                     placeholder="Search for a book..." autocomplete="off">
+                     placeholder="What book are you reading?" autocomplete="off">
+              <div id="suggestions" class="suggestions hidden"></div>
             </div>
-            <div id="suggestions" class="suggestions hidden"></div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="author">
-            <span class="label-text">Author</span>
-          </label>
-          <div class="input-wrapper">
-            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
+          <div class="form-extras">
+            <div class="form-field">
+              <input type="text" id="author" name="author" placeholder="Author (optional)">
+            </div>
+            <div class="form-field">
+              <input type="text" id="chapter" name="chapter" placeholder="Chapter (optional)">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-generate" id="generate-btn">
+            <span>Generate Playlist</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-            <input type="text" id="author" name="author"
-                   placeholder="e.g., Jane Austen">
+          </button>
+        </form>
+
+        <div id="loading" class="loading hidden">
+          <div class="loading-bars">
+            <span></span><span></span><span></span><span></span>
           </div>
+          <p>Analyzing your book...</p>
         </div>
 
-        <div class="form-group">
-          <label for="chapter">
-            <span class="label-text">Chapter or Section</span>
-            <span class="label-hint">optional — for chapter-specific moods</span>
-          </label>
-          <div class="input-wrapper">
-            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
+        <div id="result" class="result hidden">
+          <div class="playlist-header">
+            <div class="playlist-cover">
+              <div class="cover-gradient"></div>
+              <svg viewBox="0 0 80 80" fill="none">
+                <rect x="12" y="16" width="24" height="48" rx="3" stroke="white" stroke-width="2" opacity="0.9"/>
+                <rect x="44" y="16" width="24" height="48" rx="3" stroke="white" stroke-width="2" opacity="0.9"/>
+                <path d="M18 26h12M18 32h12M18 38h8" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                <circle cx="56" cy="32" r="5" stroke="white" stroke-width="2" opacity="0.7"/>
+                <path d="M52 44h8M54 50h4" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+              </svg>
+            </div>
+            <div class="playlist-info">
+              <span class="playlist-type">Playlist</span>
+              <h2 id="playlist-name"></h2>
+              <p id="playlist-description"></p>
+              <div class="playlist-meta">
+                <span id="track-count"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="playlist-actions">
+            <button class="btn-play">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg>
+            </button>
+          </div>
+
+          <div class="analysis-tags">
+            <div class="tag-group">
+              <span class="tag-label">Era</span>
+              <span id="era" class="tag"></span>
+            </div>
+            <div class="tag-group">
+              <span class="tag-label">Mood</span>
+              <span id="moods" class="tag"></span>
+            </div>
+            <div class="tag-group">
+              <span class="tag-label">Genre</span>
+              <span id="genres" class="tag"></span>
+            </div>
+          </div>
+
+          <div class="tracks-container">
+            <div class="tracks-header">
+              <span class="col-num">#</span>
+              <span class="col-title">Title</span>
+              <span class="col-links"></span>
+            </div>
+            <ul id="tracks" class="tracks-list"></ul>
+          </div>
+
+          <button class="btn-reset" onclick="resetForm()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
             </svg>
-            <input type="text" id="chapter" name="chapter"
-                   placeholder="e.g., Chapter 12, The Storm">
-          </div>
+            <span>Create another playlist</span>
+          </button>
         </div>
 
-        <button type="submit" class="btn btn-primary" id="generate-btn">
-          <span class="btn-text">Compose My Playlist</span>
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
-      </form>
-
-      <div id="loading" class="loading hidden">
-        <div class="loading-book">
-          <div class="book-page"></div>
-          <div class="book-page"></div>
-          <div class="book-page"></div>
-        </div>
-        <p class="loading-text">Reading between the lines...</p>
-        <p class="loading-subtext">Analyzing mood, era, and atmosphere</p>
-      </div>
-
-      <div id="result" class="result hidden">
-        <div class="result-header">
-          <div class="chapter-mark">Playlist Generated</div>
-          <h2 id="playlist-name"></h2>
-          <p id="playlist-description" class="playlist-desc"></p>
-        </div>
-
-        <div id="analysis" class="analysis">
-          <div class="analysis-grid">
-            <div class="analysis-item">
-              <span class="analysis-label">Era</span>
-              <span id="era" class="analysis-value"></span>
-            </div>
-            <div class="analysis-item">
-              <span class="analysis-label">Moods</span>
-              <span id="moods" class="analysis-value"></span>
-            </div>
-            <div class="analysis-item">
-              <span class="analysis-label">Genres</span>
-              <span id="genres" class="analysis-value"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tracks-section">
-          <div class="section-header">
-            <h3>Your Soundtrack</h3>
-            <span id="track-count" class="track-count"></span>
-          </div>
-          <ul id="tracks" class="tracks-list"></ul>
-        </div>
-
-        <button class="btn btn-secondary" onclick="resetForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          <span>Start New Search</span>
-        </button>
-      </div>
-
-      <div id="error" class="error hidden">
-        <div class="error-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+        <div id="error" class="error hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 8v4M12 16h.01"/>
           </svg>
+          <p id="error-message"></p>
+          <button class="btn-reset" onclick="resetForm()">Try Again</button>
         </div>
-        <p id="error-message"></p>
-        <button class="btn btn-secondary" onclick="resetForm()">Try Again</button>
       </div>
     </main>
-
-    <footer>
-      <p>Powered by AI literary analysis</p>
-    </footer>
   </div>
 
   <script src="app.js"></script>

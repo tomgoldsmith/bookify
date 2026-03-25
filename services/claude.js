@@ -9,66 +9,39 @@ async function analyzeBook(bookTitle, author, chapter) {
     throw new Error('ANTHROPIC_API_KEY is not configured');
   }
 
-  let prompt = `You are an expert literary analyst and music curator who creates deeply thoughtful playlists that capture the essence, mood, and atmosphere of books.
+  let prompt = `You are a music curator creating playlists that capture books' moods and atmosphere.
 
-Your task is to analyze a book (or specific chapter) and recommend songs that would serve as the perfect soundtrack for reading it.
-
-Book Title: ${bookTitle}`;
+Book: ${bookTitle}`;
 
   if (author) {
     prompt += `\nAuthor: ${author}`;
   }
 
   if (chapter) {
-    prompt += `\nChapter/Section: ${chapter}
+    prompt += `\nChapter: ${chapter}
 
-IMPORTANT: Since a specific chapter is mentioned, you must think deeply about what typically happens at this point in the book. Consider:
-- The narrative arc: Is this early setup, rising action, climax, or resolution?
-- Character development: What emotional journey are characters likely experiencing?
-- Typical themes and tensions that emerge in this part of the story
-- The pacing and intensity at this stage of the book
-- Any iconic scenes or moments commonly associated with this chapter
-
-Base your mood analysis and song selections on the specific emotional landscape of THIS chapter, not just the book as a whole.`;
+Consider what typically happens at this point in the book - the narrative arc, emotional journey, pacing, and key themes of this specific chapter.`;
   }
 
   prompt += `
 
-First, think through your analysis:
-1. What is the historical/cultural setting of this work?
-2. What are the dominant emotional undercurrents?
-3. What is the pacing—contemplative, urgent, dreamlike, intense?
-4. What themes resonate—love, loss, adventure, existential questioning, social commentary?
-5. What would the characters listen to, or what music captures their inner world?
+Analyze this book and return a JSON object with:
+- "era": evocative description of the time period/atmosphere
+- "moods": array of 3-4 mood words
+- "genres": array of 2-3 music genres that fit
+- "songs": array of 12-15 objects with "title" and "artist" (real songs on Spotify)
+- "playlistName": creative playlist name
+- "playlistDescription": one poetic sentence about the playlist
 
-Then provide your recommendations in this exact JSON format:
-{
-  "era": "A evocative description of the time period or atmosphere the book evokes (e.g., 'Regency England drawing rooms and rain-swept moors' or 'Post-war American disillusionment')",
-  "moods": ["mood1", "mood2", "mood3", "mood4"],
-  "genres": ["genre1", "genre2", "genre3"],
-  "songs": [
-    {"title": "Song Title", "artist": "Artist Name"},
-    ...
-  ],
-  "playlistName": "A creative, evocative playlist name that captures the book's essence",
-  "playlistDescription": "A poetic 1-2 sentence description of what this playlist evokes"
-}
+Mix well-known songs with deeper cuts. Be creative and unexpected.
 
-Guidelines for song selection:
-- Include 12-15 songs that are available on Spotify
-- Mix iconic tracks with thoughtful deeper cuts
-- Consider instrumental pieces for contemplative works
-- Match the emotional arc—don't just pick one mood
-- Include songs from various decades if they fit the feeling
-- Avoid clichés; be creative and unexpected in your choices
-
-Respond ONLY with the JSON object, no additional text.`;
+Return ONLY valid JSON, no other text.`;
 
   const response = await axios.post(
     ANTHROPIC_API_URL,
     {
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2048,
+      model: 'claude-haiku-4-20250514',
+      max_tokens: 1500,
       messages: [
         {
           role: 'user',
@@ -87,7 +60,6 @@ Respond ONLY with the JSON object, no additional text.`;
 
   const content = response.data.content[0].text;
 
-  // Extract JSON from the response
   const jsonMatch = content.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
     throw new Error('Failed to parse Claude response as JSON');

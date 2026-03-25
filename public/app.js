@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   setupFormHandler();
   setupTypeahead();
-  initPageAnimations();
 });
 
-// Debounce helper
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -15,55 +13,6 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
-
-// Initialize subtle page animations
-function initPageAnimations() {
-  // Add loaded class for initial animations
-  document.body.classList.add('loaded');
-}
-
-// Mood detection based on book/genre keywords
-function detectMood(bookTitle, author) {
-  const text = `${bookTitle} ${author}`.toLowerCase();
-
-  // Romance indicators
-  if (/love|heart|passion|desire|romance|pride|prejudice|austen|bronte|sparks|steel/.test(text)) {
-    return 'romance';
-  }
-  // Mystery/Thriller indicators
-  if (/mystery|detective|murder|crime|thriller|agatha|christie|conan|doyle|sherlock/.test(text)) {
-    return 'mystery';
-  }
-  // Adventure indicators
-  if (/adventure|journey|quest|treasure|island|verne|dumas|stevenson|twain/.test(text)) {
-    return 'adventure';
-  }
-  // Fantasy indicators
-  if (/magic|wizard|dragon|realm|kingdom|tolkien|rowling|sanderson|jordan|rings|throne/.test(text)) {
-    return 'fantasy';
-  }
-  // Sci-Fi indicators
-  if (/space|future|robot|android|alien|asimov|clarke|dick|gibson|dune|foundation/.test(text)) {
-    return 'scifi';
-  }
-  // Horror indicators
-  if (/horror|dark|fear|night|blood|king|lovecraft|poe|dracula|frankenstein/.test(text)) {
-    return 'horror';
-  }
-  // Default literary fiction
-  return 'literary';
-}
-
-// Apply mood theme to page
-function applyMood(mood) {
-  // Remove all existing mood classes
-  document.body.classList.remove(
-    'mood-romance', 'mood-mystery', 'mood-adventure',
-    'mood-fantasy', 'mood-scifi', 'mood-horror', 'mood-literary'
-  );
-  // Apply new mood
-  document.body.classList.add(`mood-${mood}`);
 }
 
 function setupTypeahead() {
@@ -82,7 +31,7 @@ function setupTypeahead() {
 
     try {
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=6&fields=title,author_name,first_publish_year,cover_i,subject`
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=6&fields=title,author_name,first_publish_year,cover_i`
       );
       const data = await response.json();
 
@@ -124,14 +73,7 @@ function setupTypeahead() {
   }, 300);
 
   input.addEventListener('input', (e) => {
-    const query = e.target.value.trim();
-    searchBooks(query);
-
-    // Apply mood based on what's being typed
-    if (query.length > 3) {
-      const mood = detectMood(query, authorInput.value);
-      applyMood(mood);
-    }
+    searchBooks(e.target.value.trim());
   });
 
   input.addEventListener('keydown', (e) => {
@@ -170,10 +112,6 @@ function setupTypeahead() {
         authorInput.value = book.author_name[0];
       }
       suggestions.classList.add('hidden');
-
-      // Apply mood based on selected book
-      const mood = detectMood(book.title, book.author_name ? book.author_name[0] : '');
-      applyMood(mood);
     }
   }
 
@@ -185,14 +123,12 @@ function setupTypeahead() {
     }
   });
 
-  // Hide suggestions when clicking outside
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.autocomplete-wrapper')) {
+    if (!e.target.closest('.autocomplete-wrapper') && !e.target.closest('.search-box')) {
       suggestions.classList.add('hidden');
     }
   });
 
-  // Show suggestions on focus if there's content
   input.addEventListener('focus', () => {
     if (currentSuggestions.length > 0 && input.value.length >= 2) {
       suggestions.classList.remove('hidden');
@@ -223,13 +159,14 @@ function setupFormHandler() {
 
 async function generatePlaylist(formData) {
   const form = document.getElementById('book-form');
+  const hero = document.getElementById('hero');
   const loading = document.getElementById('loading');
   const result = document.getElementById('result');
   const error = document.getElementById('error');
   const generateBtn = document.getElementById('generate-btn');
 
-  // Show loading state
   form.classList.add('hidden');
+  hero.classList.add('hidden');
   loading.classList.remove('hidden');
   result.classList.add('hidden');
   error.classList.add('hidden');
@@ -263,33 +200,30 @@ async function generatePlaylist(formData) {
 function displayResult(data) {
   const result = document.getElementById('result');
 
-  // Display analysis
   document.getElementById('era').textContent = data.analysis.era;
   document.getElementById('moods').textContent = data.analysis.moods.join(', ');
   document.getElementById('genres').textContent = data.analysis.genres.join(', ');
 
-  // Display playlist info
   document.getElementById('playlist-name').textContent = data.playlist.name;
   document.getElementById('playlist-description').textContent = data.playlist.description;
-  document.getElementById('track-count').textContent = data.playlist.totalSongs + ' tracks';
+  document.getElementById('track-count').textContent = `${data.playlist.totalSongs} songs`;
 
-  // Display tracks with links and numbers
   const tracksList = document.getElementById('tracks');
   tracksList.innerHTML = data.playlist.songs.map((song, index) => `
     <li class="track-item">
-      <span class="track-number">${String(index + 1).padStart(2, '0')}</span>
+      <span class="track-num">${index + 1}</span>
       <div class="track-info">
         <div class="track-title">${escapeHtml(song.title)}</div>
         <div class="track-artist">${escapeHtml(song.artist)}</div>
       </div>
       <div class="track-links">
-        <a href="${song.spotifySearchUrl}" target="_blank" class="btn-link btn-spotify-small" title="Search on Spotify">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <a href="${song.spotifySearchUrl}" target="_blank" class="btn-link btn-spotify" title="Search on Spotify">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
             <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
           </svg>
         </a>
         <a href="${song.youtubeSearchUrl}" target="_blank" class="btn-link btn-youtube" title="Search on YouTube">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
           </svg>
         </a>
@@ -298,18 +232,18 @@ function displayResult(data) {
   `).join('');
 
   result.classList.remove('hidden');
-
-  // Scroll to result
   result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function showError(message) {
   const form = document.getElementById('book-form');
+  const hero = document.getElementById('hero');
   const loading = document.getElementById('loading');
   const result = document.getElementById('result');
   const error = document.getElementById('error');
 
   form.classList.add('hidden');
+  hero.classList.add('hidden');
   loading.classList.add('hidden');
   result.classList.add('hidden');
   error.classList.remove('hidden');
@@ -319,19 +253,17 @@ function showError(message) {
 
 function resetForm() {
   const form = document.getElementById('book-form');
+  const hero = document.getElementById('hero');
   const loading = document.getElementById('loading');
   const result = document.getElementById('result');
   const error = document.getElementById('error');
 
   form.classList.remove('hidden');
+  hero.classList.remove('hidden');
   loading.classList.add('hidden');
   result.classList.add('hidden');
   error.classList.add('hidden');
 
-  // Reset mood to default
-  applyMood('literary');
-
-  // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
