@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book to Playlist</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Book to Playlist</h1>
+      <p class="subtitle">Transform your reading into a musical journey</p>
+    </header>
+
+    <div id="auth-section" class="auth-section">
+      <div id="logged-out" class="hidden">
+        <p>Connect your Spotify account to create playlists</p>
+        <a href="/auth/login" class="btn btn-spotify">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+          Connect Spotify
+        </a>
+      </div>
+      <div id="logged-in" class="hidden">
+        <div class="user-info">
+          <img id="user-avatar" src="" alt="User avatar" class="avatar">
+          <span id="user-name"></span>
+          <a href="/auth/logout" class="btn btn-small">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <main id="main-content" class="hidden">
+      <form id="book-form" class="book-form">
+        <div class="form-group">
+          <label for="bookTitle">Book Title *</label>
+          <input type="text" id="bookTitle" name="bookTitle" required
+                 placeholder="e.g., Pride and Prejudice">
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input type="text" id="author" name="author"
+                 placeholder="e.g., Jane Austen">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="chapter">Chapter/Section</label>
+            <input type="text" id="chapter" name="chapter"
+                   placeholder="e.g., Chapter 1">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="chapterDescription">Chapter Description (optional)</label>
+          <textarea id="chapterDescription" name="chapterDescription" rows="3"
+                    placeholder="Describe the mood or key events to get more tailored music"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="generate-btn">
+          Generate Playlist
+        </button>
+      </form>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Analyzing your book and creating playlist...</p>
+      </div>
+
+      <div id="result" class="result hidden">
+        <div class="result-header">
+          <h2>Your Playlist is Ready!</h2>
+        </div>
+
+        <div id="analysis" class="analysis">
+          <h3>Book Analysis</h3>
+          <p><strong>Era:</strong> <span id="era"></span></p>
+          <p><strong>Moods:</strong> <span id="moods"></span></p>
+          <p><strong>Genres:</strong> <span id="genres"></span></p>
+        </div>
+
+        <div class="playlist-info">
+          <h3 id="playlist-name"></h3>
+          <p id="track-count"></p>
+          <a id="playlist-link" href="" target="_blank" class="btn btn-spotify">
+            Open in Spotify
+          </a>
+        </div>
+
+        <div id="spotify-embed" class="spotify-embed"></div>
+
+        <div id="tracks-list" class="tracks-list">
+          <h3>Tracks Added</h3>
+          <ul id="tracks"></ul>
+        </div>
+
+        <div id="not-found" class="not-found hidden">
+          <h4>Songs Not Found on Spotify</h4>
+          <ul id="not-found-list"></ul>
+        </div>
+
+        <button class="btn btn-secondary" onclick="resetForm()">
+          Create Another Playlist
+        </button>
+      </div>
+
+      <div id="error" class="error hidden">
+        <p id="error-message"></p>
+        <button class="btn btn-secondary" onclick="resetForm()">Try Again</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
