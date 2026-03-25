@@ -1,6 +1,143 @@
 document.addEventListener('DOMContentLoaded', () => {
   setupFormHandler();
+  setupTypeahead();
 });
+
+// Debounce helper
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function setupTypeahead() {
+  const input = document.getElementById('bookTitle');
+  const suggestions = document.getElementById('suggestions');
+  const authorInput = document.getElementById('author');
+
+  let selectedIndex = -1;
+  let currentSuggestions = [];
+
+  const searchBooks = debounce(async (query) => {
+    if (query.length < 2) {
+      suggestions.classList.add('hidden');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=6&fields=title,author_name,first_publish_year,cover_i`
+      );
+      const data = await response.json();
+
+      currentSuggestions = data.docs || [];
+      selectedIndex = -1;
+
+      if (currentSuggestions.length === 0) {
+        suggestions.classList.add('hidden');
+        return;
+      }
+
+      suggestions.innerHTML = currentSuggestions.map((book, index) => {
+        const author = book.author_name ? book.author_name[0] : 'Unknown Author';
+        const year = book.first_publish_year || '';
+        const coverId = book.cover_i;
+        const coverUrl = coverId
+          ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg`
+          : null;
+
+        return `
+          <div class="suggestion-item" data-index="${index}">
+            ${coverUrl
+              ? `<img src="${coverUrl}" alt="" class="suggestion-cover">`
+              : `<div class="suggestion-cover-placeholder"></div>`
+            }
+            <div class="suggestion-info">
+              <div class="suggestion-title">${escapeHtml(book.title)}</div>
+              <div class="suggestion-author">${escapeHtml(author)}${year ? ` (${year})` : ''}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      suggestions.classList.remove('hidden');
+    } catch (error) {
+      console.error('Search error:', error);
+      suggestions.classList.add('hidden');
+    }
+  }, 300);
+
+  input.addEventListener('input', (e) => {
+    searchBooks(e.target.value.trim());
+  });
+
+  input.addEventListener('keydown', (e) => {
+    const items = suggestions.querySelectorAll('.suggestion-item');
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+      updateSelection(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateSelection(items);
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      selectSuggestion(selectedIndex);
+    } else if (e.key === 'Escape') {
+      suggestions.classList.add('hidden');
+    }
+  });
+
+  function updateSelection(items) {
+    items.forEach((item, index) => {
+      item.classList.toggle('selected', index === selectedIndex);
+    });
+    if (selectedIndex >= 0) {
+      items[selectedIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function selectSuggestion(index) {
+    const book = currentSuggestions[index];
+    if (book) {
+      input.value = book.title;
+      if (book.author_name && book.author_name[0]) {
+        authorInput.value = book.author_name[0];
+      }
+      suggestions.classList.add('hidden');
+    }
+  }
+
+  suggestions.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (item) {
+      const index = parseInt(item.dataset.index, 10);
+      selectSuggestion(index);
+    }
+  });
+
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      suggestions.classList.add('hidden');
+    }
+  });
+
+  // Show suggestions on focus if there's content
+  input.addEventListener('focus', () => {
+    if (currentSuggestions.length > 0 && input.value.length >= 2) {
+      suggestions.classList.remove('hidden');
+    }
+  });
+}
 
 function setupFormHandler() {
   const form = document.getElementById('book-form');
