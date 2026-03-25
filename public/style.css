@@ -37,28 +37,6 @@ header h1 {
   font-size: 1.1rem;
 }
 
-.auth-section {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .hidden {
   display: none !important;
 }
@@ -115,11 +93,6 @@ header h1 {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
-}
-
-.btn-small {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
 }
 
 .book-form {
@@ -230,19 +203,18 @@ input::placeholder, textarea::placeholder {
 .playlist-info h3 {
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+#playlist-description {
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
 }
 
 #track-count {
-  color: #a0a0a0;
-  margin-bottom: 1rem;
-}
-
-.spotify-embed {
-  margin: 1.5rem 0;
-}
-
-.spotify-embed iframe {
-  border-radius: 12px;
+  color: #1db954;
+  font-weight: 500;
 }
 
 .tracks-list {
@@ -250,32 +222,31 @@ input::placeholder, textarea::placeholder {
 }
 
 .tracks-list h3 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-size: 1rem;
   color: #1db954;
+}
+
+.tracks-hint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
 }
 
 .tracks-list ul {
   list-style: none;
 }
 
-.tracks-list li {
+.track-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
+  justify-content: space-between;
+  padding: 0.75rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.tracks-list li:last-child {
+.track-item:last-child {
   border-bottom: none;
-}
-
-.track-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  object-fit: cover;
 }
 
 .track-info {
@@ -291,23 +262,41 @@ input::placeholder, textarea::placeholder {
   color: #a0a0a0;
 }
 
-.not-found {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: rgba(255, 100, 100, 0.1);
-  border-radius: 8px;
+.track-links {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.not-found h4 {
-  color: #ff6b6b;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+.btn-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
-.not-found ul {
-  list-style: none;
-  font-size: 0.85rem;
-  color: #a0a0a0;
+.btn-spotify-small {
+  background: rgba(29, 185, 84, 0.2);
+  color: #1db954;
+}
+
+.btn-spotify-small:hover {
+  background: #1db954;
+  color: white;
+  transform: scale(1.1);
+}
+
+.btn-youtube {
+  background: rgba(255, 0, 0, 0.15);
+  color: #ff4444;
+}
+
+.btn-youtube:hover {
+  background: #ff0000;
+  color: white;
+  transform: scale(1.1);
 }
 
 .error {
@@ -335,5 +324,15 @@ input::placeholder, textarea::placeholder {
   .form-row {
     flex-direction: column;
     gap: 0;
+  }
+
+  .track-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .track-links {
+    width: 100%;
+    justify-content: flex-end;
   }
 }

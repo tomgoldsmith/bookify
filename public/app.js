@@ -1,55 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  checkAuthStatus();
   setupFormHandler();
-  handleUrlParams();
 });
-
-async function checkAuthStatus() {
-  try {
-    const response = await fetch('/api/auth/status');
-    const data = await response.json();
-
-    const loggedOut = document.getElementById('logged-out');
-    const loggedIn = document.getElementById('logged-in');
-    const mainContent = document.getElementById('main-content');
-
-    if (data.authenticated) {
-      loggedOut.classList.add('hidden');
-      loggedIn.classList.remove('hidden');
-      mainContent.classList.remove('hidden');
-
-      if (data.user) {
-        document.getElementById('user-name').textContent = data.user.displayName || data.user.id;
-        const avatar = document.getElementById('user-avatar');
-        if (data.user.image) {
-          avatar.src = data.user.image;
-        } else {
-          avatar.style.display = 'none';
-        }
-      }
-    } else {
-      loggedOut.classList.remove('hidden');
-      loggedIn.classList.add('hidden');
-      mainContent.classList.add('hidden');
-    }
-  } catch (error) {
-    console.error('Auth check failed:', error);
-  }
-}
-
-function handleUrlParams() {
-  const params = new URLSearchParams(window.location.search);
-
-  if (params.get('error')) {
-    const error = params.get('error');
-    showError(`Authentication failed: ${error}`);
-  }
-
-  // Clean up URL
-  if (params.has('success') || params.has('error')) {
-    window.history.replaceState({}, document.title, '/');
-  }
-}
 
 function setupFormHandler() {
   const form = document.getElementById('book-form');
@@ -122,50 +73,31 @@ function displayResult(data) {
 
   // Display playlist info
   document.getElementById('playlist-name').textContent = data.playlist.name;
-  document.getElementById('track-count').textContent =
-    `${data.playlist.tracksFound} of ${data.playlist.tracksRequested} songs added`;
+  document.getElementById('playlist-description').textContent = data.playlist.description;
+  document.getElementById('track-count').textContent = data.playlist.totalSongs + ' songs recommended';
 
-  const playlistLink = document.getElementById('playlist-link');
-  playlistLink.href = data.playlist.url;
-
-  // Spotify embed
-  const embedContainer = document.getElementById('spotify-embed');
-  embedContainer.innerHTML = `
-    <iframe
-      src="https://open.spotify.com/embed/playlist/${data.playlist.id}?utm_source=generator&theme=0"
-      width="100%"
-      height="352"
-      frameBorder="0"
-      allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy">
-    </iframe>
-  `;
-
-  // Display tracks
+  // Display tracks with links
   const tracksList = document.getElementById('tracks');
-  tracksList.innerHTML = data.playlist.tracks.map(track => `
-    <li>
-      ${track.image ? `<img src="${track.image}" alt="" class="track-image">` : ''}
+  tracksList.innerHTML = data.playlist.songs.map(song => `
+    <li class="track-item">
       <div class="track-info">
-        <div class="track-title">${escapeHtml(track.title)}</div>
-        <div class="track-artist">${escapeHtml(track.artist)}</div>
+        <div class="track-title">${escapeHtml(song.title)}</div>
+        <div class="track-artist">${escapeHtml(song.artist)}</div>
+      </div>
+      <div class="track-links">
+        <a href="${song.spotifySearchUrl}" target="_blank" class="btn-link btn-spotify-small" title="Search on Spotify">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+        </a>
+        <a href="${song.youtubeSearchUrl}" target="_blank" class="btn-link btn-youtube" title="Search on YouTube">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
       </div>
     </li>
   `).join('');
-
-  // Display not found songs
-  const notFoundSection = document.getElementById('not-found');
-  const notFoundList = document.getElementById('not-found-list');
-
-  if (data.playlist.notFound && data.playlist.notFound.length > 0) {
-    notFoundList.innerHTML = data.playlist.notFound.map(song =>
-      `<li>${escapeHtml(song.title)} - ${escapeHtml(song.artist)}</li>`
-    ).join('');
-    notFoundSection.classList.remove('hidden');
-  } else {
-    notFoundSection.classList.add('hidden');
-  }
 
   result.classList.remove('hidden');
 }
@@ -194,9 +126,6 @@ function resetForm() {
   loading.classList.add('hidden');
   result.classList.add('hidden');
   error.classList.add('hidden');
-
-  // Optionally reset form fields
-  // document.getElementById('book-form').reset();
 }
 
 function escapeHtml(text) {
